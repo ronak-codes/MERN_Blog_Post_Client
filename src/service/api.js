@@ -4,7 +4,7 @@ import { getAccessToken, getType } from "../utils/common-utils.js";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const API_URL="http://localhost:8000";
+const API_URL="https://blogpost-backend-ga1j.onrender.com";
 const axiosInstance = axios.create({
     baseURL:API_URL,
     timeout:10000, 

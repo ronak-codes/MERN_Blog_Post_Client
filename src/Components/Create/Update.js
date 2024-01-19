@@ -107,13 +107,13 @@ const Update = () => {
                 formData.append("name",file.name)
                 formData.append("file",file);
 
-               const response = await fetch("http://localhost:8000/file/upload",
+               const response = await fetch("https://blogpost-backend-ga1j.onrender.com/file/upload",
                 {
                     method:"POST",
                     body:formData
                 })
 
-                post.picture = "http://localhost:8000/file/"+file.name;
+                post.picture = "https://blogpost-backend-ga1j.onrender.com/file/"+file.name;
 
             }catch(error){
                 console.log("error is ",error)

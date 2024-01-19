@@ -132,13 +132,13 @@ const CreatePost = () => {
                 formData.append("name",file.name)
                 formData.append("file",file);
 
-               const response = await fetch("http://localhost:8000/file/upload",
+               const response = await fetch("https://blogpost-backend-ga1j.onrender.com/file/upload",
                 {
                     method:"POST",
                     body:formData
                 })
                 // console.log("response is ",response)
-                post.picture = "http://localhost:8000/file/"+file.name;
+                post.picture = "https://blogpost-backend-ga1j.onrender.com/file/"+file.name;
                 // let data = {
                 //     name:file.name,
                 //     file:file
