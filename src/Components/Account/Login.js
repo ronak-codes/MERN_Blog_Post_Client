@@ -199,10 +199,13 @@ const Login = ({setIsUserAuthenticated}) => {
                     <Typography style={{textAlign:'center'}}>Or</Typography>
                     <SignUpButton onClick={()=>toggleState()} >Create an account</SignUpButton>
                     <span className='spanTag'>
-                    <input type="text" value="user1" id="copyUserName" style={{marginTop:"35px",marginLeft:"15px",marginRight:"10px", }} readOnly/>
-                    <button type='button' onClick={() => copyField("copyUserName")}>copyUserName</button>
-                    <input type="password" value="12345" id="copyPassWord"  style={{margin:"15px"}} readOnly/>
-                    <button type='button' onClick={() => copyField("copyPassWord")}>copyPassword</button>
+                    <p>Demo user credentials</p>   
+                    <p>userName: user1</p>
+                    <p>password: 12345</p>
+                    {/* <input type="text" value="user1" id="copyUserName" style={{marginTop:"35px",marginLeft:"15px",marginRight:"10px", }} readOnly/> */}
+                    {/* <button type='button' onClick={() => copyField("copyUserName")}>copyUserName</button> */}
+                    {/* <input type="text" value="12345" id="copyPassWord"  style={{margin:"15px"}} readOnly/> */}
+                    {/* <button type='button' onClick={() => copyField("copyPassWord")}>copyPassword</button> */}
                     </span>
                 </Wrapper>
             :
