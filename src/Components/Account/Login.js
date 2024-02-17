@@ -93,12 +93,13 @@ const Login = ({setIsUserAuthenticated}) => {
     
     function toggleState(){
         account==='signup'?toggleAccount('login'):toggleAccount('signup');
+        setLogin({username:"",password:""});
+        setSignUp(signUpInitialValue);
     }
         
 
 
     function onInputChange(e){
-        // console.log(e.target.name,r,target.value);
         // spread operator is used to append the value to the current value instead of overriding the value
         setSignUp({...signup,[e.target.name]:e.target.value})
     }
@@ -110,42 +111,42 @@ const Login = ({setIsUserAuthenticated}) => {
 
     const signUpUser = async () =>{
 
-      if(signup.name == 0){
+        if (signup.name == 0) {
             toast.error("Name cannot be empty");
             return;
-      }
-      if(signup.username==0){
+        }
+        if (signup.username == 0) {
             toast.error("Username cannot be empty !");
             return;
-      }
-      if(signup.password==0){
+        }
+        if (signup.password == 0) {
             toast.error("Password cannot be empty");
             return;
-      }
+        }
+        
+        try {
 
-       let response = await API.userSignUp(signup);
-       setLogin({username:"",password:""});
-       console.log("The response is ",response)
-       if(response.isSuccess)
-       {
+            let response = await API.userSignUp(signup);
+            setLogin({ username: "", password: "" });
+            
+            if (response.isSuccess) {
 
-            console.log("Signup is done Successfully");
-            setSignUp(signUpInitialValue);
-            toggleAccount('login');
-            setError('');
-       }
-       else
-       {
-            // alert("Hello Error");
-            console.log("Signup Failed");
+                setSignUp(signUpInitialValue);
+                toast.success("signup successfull!")
+                toggleAccount('login');
+                setError('');
+            }
+
+        } catch (error) {
+            toast.error("This username is already taken !")
             setError('Something Went Wrong ! Please try again later.');
-       }
+        }
 
     }
 
 
     const loginUser = async () =>{
-        // console.log("login",login)
+
         if(login.username.length==0){
             toast.error("username cannot be empty !")
             return;
@@ -157,20 +158,18 @@ const Login = ({setIsUserAuthenticated}) => {
         try{
 
             let response = await API.userLogin(login);
-            // console.log("response",response)
+
             if(response.isSuccess)
             {
-                // console.log("login Successfull");
+
                 setError("");
                 sessionStorage.setItem('accessToken', ` Bearer ${response.data.accessToken} `);
                 sessionStorage.setItem('refreshToken',` Bearer ${response.data.refreshToken} `);
-                // We will store username and name in globally because we need to use them from different components of our application
-                // we will use context for this (useContext)
+                // We will store username and name  globally because we need to use them from different components of our application
+                // we will use useContext for this (useContext hook)
                 setAccount({username:response.data.username,name:response.data.name});
                 setIsUserAuthenticated(true);
-                // console.log("Navigating");
                 navigate("/");
-                // console.log("After Navigation");
     
             }
         }catch(error){
@@ -180,10 +179,11 @@ const Login = ({setIsUserAuthenticated}) => {
         }
 
     }
-    const copyField = (fieldId) => {
-            const Field = document.getElementById(fieldId);
-            navigator.clipboard.writeText(Field.value);
-    }
+
+    // const copyField = (fieldId) => {
+    //         const Field = document.getElementById(fieldId);
+    //         navigator.clipboard.writeText(Field.value);
+    // }
 
   return (
     <Component>
@@ -192,9 +192,8 @@ const Login = ({setIsUserAuthenticated}) => {
             {
             account==="login"?
                 <Wrapper>
-                    <TextField variant='standard' label="Enter Username" name="username"  onChange={(e)=>onValueChange(e)}/>
-                    <TextField variant='standard' label="Enter Password" name="password" type ="password"  onChange={(e)=>onValueChange(e)}/>
-                    { error&&<Error>{error}</Error>}
+                    <TextField variant='standard' label="Enter Username" name="username" value={account==="login"?login.username:""} onChange={(e)=>onValueChange(e)} />
+                    <TextField variant='standard' label="Enter Password" name="password" type ="password" value={account==="login"?login.password:""} onChange={(e)=>onValueChange(e)}/>
                     <LoginButton variant='contained' onClick={()=>loginUser()}>Login</LoginButton>
                     <Typography style={{textAlign:'center'}}>Or</Typography>
                     <SignUpButton onClick={()=>toggleState()} >Create an account</SignUpButton>
@@ -210,10 +209,9 @@ const Login = ({setIsUserAuthenticated}) => {
                 </Wrapper>
             :
                 <Wrapper>
-                    <TextField variant='standard' label="Enter Name" name="name" onChange={(e)=>onInputChange(e)} />
-                    <TextField variant='standard'label="Enter Username" name="username" onChange={(e)=>onInputChange(e)} />
-                    <TextField variant='standard'label="Enter Password"  name="password" type ="password" onChange={(e)=>onInputChange(e)} />
-                    {/* { error&&<Error>{error}</Error>} */}
+                    <TextField variant='standard' label="Enter Name" name="name" value={account==="signup"?signup.name:""} onChange={(e)=>onInputChange(e)} />
+                    <TextField variant='standard' label="Enter Username" name="username" value={account==="signup"?signup.username:""} onChange={(e)=>onInputChange(e)} />
+                    <TextField variant='standard' label="Enter Password"  name="password" type ="password" value={account==="signup"?signup.password:""} onChange={(e)=>onInputChange(e)} />
                     <SignUpButton onClick={()=>{signUpUser()}}>SignUp</SignUpButton>
                     <Typography style={{textAlign:'center'}}>OR</Typography>
                     <LoginButton variant='contained' onClick={()=>toggleState()}>Already have an account</LoginButton>   
